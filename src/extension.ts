@@ -1,6 +1,4 @@
 'use strict';
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 
@@ -223,7 +221,7 @@ namespace switcher {
     //==========================================================================
     export function run()
     {
-        // get the current active document
+        // Get the current active document
         let active_document: vscode.TextDocument = undefined;
         if (vscode.window.activeTextEditor) {
             active_document = vscode.window.activeTextEditor.document;
@@ -232,13 +230,13 @@ namespace switcher {
             return;
         }
         
-        // get the parts of directory path, filename and extension
+        // Get the parts of directory path, filename and extension
         context.splited_path = splitFilePath(
             // convert back-slash to slash
             active_document.fileName.replace(/\\/g, "/")
         ); 
 
-        // get the extension index of the active document
+        // Get the extension index of the active document
         context.first_ext_index = getExtensionIndex(context.splited_path.ename);
         if (context.first_ext_index == undefined) {
             console.log("Switcher: unknown extension");

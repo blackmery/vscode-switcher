@@ -1,6 +1,6 @@
 # Switcher
 
-for Visual Studio Code.
+Switcher for Visual Studio Code.
 
 # Configures
 

@@ -28,8 +28,8 @@
         }],
         "keybindings": [{
             "command": "extension.switcher.run",
-            "key": "ctrl+shift+c",
-            "mac": "cmd+shift+c"
+            "key": "alt+o",
+            "mac": "alt+o"
         }],
         "configuration": {
             "type": "object",

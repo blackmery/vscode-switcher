@@ -21,6 +21,6 @@ setting.json ( `Ctrl+shift+P, >User Settings` )
 keybindings.json ( `Ctrl+shift+P, >Keyboard Shortcuts` )
 ```
 {
-    { "key": "ctrl+shift+c", "command": "extension.switcher.run" }
+    { "key": "alt+o", "command": "extension.switcher.run" }
 }
 ```

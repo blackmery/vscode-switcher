@@ -42,7 +42,18 @@
                 },
                 "switcher.findExtensionOrder": {
                     "type": "array",
-                    "default": ["cpp", "c", "h", "hpp", "inl"],
+                    "default": [
+                        "m",
+                        "mm",
+                        "cpp",
+                        "c",
+                        "h",
+                        "hpp",
+                        "inl",
+                        "js",
+                        "html",
+                        "css"
+                    ],
                     "description": "Swicher: findExtensionOrder"
                 }
             }

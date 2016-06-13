@@ -9,11 +9,16 @@ setting.json ( `Ctrl+shift+P, >User Settings` )
 {
     "switcher.findAllFilesInRootDirectory": false,
     "switcher.findExtensionOrder": [
+        "m",
+        "mm",
         "cpp",
         "c",
         "h",
         "hpp",
-        "inl"
+        "inl",
+        "js",
+        "html",
+        "css"
     ]
 }
 ```

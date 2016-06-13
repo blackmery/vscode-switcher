@@ -1,7 +1,7 @@
 {
     "name": "vscode-switcher",
     "displayName": "Switcher",
-    "description": "",
+    "description": "Switch to different file extension for vscode (e.g. foo.c -> bar.h)",
     "version": "0.0.1",
     "publisher": "blackmery",
     "license": "MIT",
@@ -24,7 +24,12 @@
     "contributes": {
         "commands": [{
             "command": "extension.switcher.run",
-            "title": "Switcher"
+            "title": "Switcher: Switch to Different File Extension"
+        }],
+        "keybindings": [{
+            "command": "extension.switcher.run",
+            "key": "ctrl+shift+c",
+            "mac": "cmd+shift+c"
         }],
         "configuration": {
             "type": "object",
@@ -41,12 +46,7 @@
                     "description": "Swicher: findExtensionOrder"
                 }
             }
-        },
-        "keybindings": [{
-            "command": "extension.switcher.run",
-            "key": "ctrl+shift+c",
-            "mac": "cmd+shift+c"
-        }]
+        }
     },
     "scripts": {
         "vscode:prepublish": "node ./node_modules/vscode/bin/compile",

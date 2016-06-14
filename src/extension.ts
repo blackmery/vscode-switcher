@@ -134,6 +134,23 @@ namespace switcher {
     };
 
     //==========================================================================
+    function showTextDocument(document: vscode.TextDocument) : PromiseLike<any>
+    {
+        // Index of the current active view column
+        const active_view_column = vscode.window.activeTextEditor.viewColumn;
+
+        // Show a text document to the active view column
+        return vscode.window.showTextDocument(document, active_view_column).then(
+            document => {
+                return Promise.resolve(document);
+            },
+            reason => {
+                return Promise.reject(undefined);
+            }
+        )
+    }
+
+    //==========================================================================
     function alwaysReject() : PromiseLike<any>
     {
         // TODO: Microsoft/vscode: vscode debugger stops on reject() #1746  
@@ -236,7 +253,7 @@ namespace switcher {
         if (active_document == undefined) {
             return;
         }
-        
+
         // Get the parts of directory path, filename and extension
         context.splited_path = splitFilePath(
             // convert back-slash to slash
@@ -255,7 +272,7 @@ namespace switcher {
         selectDocument(next_suffix_index).then(
             document => {
                 console.log("Switcher: " + document.fileName);
-                vscode.window.showTextDocument(document);
+                return showTextDocument(document);
             },
             reason => {
                 console.log("Switcher: file not found");

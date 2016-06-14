@@ -40,21 +40,29 @@
                     "default": false,
                     "description": "Swicher: findAllFilesInRootDirectory"
                 },
-                "switcher.findExtensionOrder": {
+                "switcher.findSuffixOrder": {
                     "type": "array",
                     "default": [
-                        "m",
-                        "mm",
-                        "cpp",
-                        "c",
-                        "h",
-                        "hpp",
-                        "inl",
-                        "js",
-                        "html",
-                        "css"
+                        ".m",
+                        ".mm",
+                        ".cs",
+                        ".cpp",
+                        ".cxx",
+                        ".c++",
+                        ".cc",
+                        ".c",
+                        ".h",
+                        ".hpp",
+                        ".hxx",
+                        ".inc",
+                        ".inl",
+                        "-inl.h",
+                        "_inl.h",
+                        ".js",
+                        ".html",
+                        ".css"
                     ],
-                    "description": "Swicher: findExtensionOrder"
+                    "description": "Swicher: findSuffixOrder"
                 }
             }
         }
@@ -67,5 +75,8 @@
     "devDependencies": {
         "typescript": "^1.8.5",
         "vscode": "^0.11.0"
+    },
+    "dependencies": {
+        "path": "^0.12.7"   
     }
 }

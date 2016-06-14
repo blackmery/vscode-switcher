@@ -8,17 +8,25 @@ setting.json ( `Ctrl+shift+P, >User Settings` )
 ```
 {
     "switcher.findAllFilesInRootDirectory": false,
-    "switcher.findExtensionOrder": [
-        "m",
-        "mm",
-        "cpp",
-        "c",
-        "h",
-        "hpp",
-        "inl",
-        "js",
-        "html",
-        "css"
+    "switcher.findSuffixOrder": [
+        ".m",
+        ".mm",
+        ".cs",
+        ".cpp",
+        ".cxx",
+        ".c++",
+        ".cc",
+        ".c",
+        ".h",
+        ".hpp",
+        ".hxx",
+        ".inc",
+        ".inl",
+        "-inl.h",
+        "_inl.h",
+        ".js",
+        ".html",
+        ".css"
     ]
 }
 ```

@@ -1,5 +1,6 @@
 'use strict';
 import * as vscode from 'vscode';
+import * as path from 'path';
 
 namespace switcher {
 
@@ -8,35 +9,41 @@ namespace switcher {
 
     //==========================================================================
     class SplitedPath {
-        dpath: string;
-        fname: string;
-        ename: string;
-        constructor(dpath?: string, fname?: string, ename?: string) {
-            this.dpath = dpath;
-            this.fname = fname;
-            this.ename = ename;
+        dirname : string;
+        basename: string;
+        suffix  : string;
+        constructor(dirname?: string, basename?: string, suffix?: string) {
+            this.dirname  = dirname;
+            this.basename = basename;
+            this.suffix   = suffix;
         }
     }
 
     //==========================================================================
     class Context {
-        splited_path    : SplitedPath;
-        first_ext_index : number;
-        extensions      : string [];
+        splited_path : SplitedPath;
+        first_index  : number;
+        suffixes     : string [];
 
         constructor() {
-            this.splited_path    = new SplitedPath();
-            this.first_ext_index = undefined;
-            this.extensions      = [];
+            this.splited_path = new SplitedPath();
+            this.first_index  = undefined;
+            this.suffixes     = [];
 
             const configuration = vscode.workspace.getConfiguration();
-            const extensions = configuration.get("switcher.findExtensionOrder");
-            for (let i in extensions) {
-                this.extensions.push(extensions[i]);
+            const suffixes      = configuration.get("switcher.findSuffixOrder");
+            for (let i in suffixes) {
+                this.suffixes.push(suffixes[i]);
             }
         }
     }
     let context = new Context();
+
+    //==========================================================================
+    function appendEspaceForRegex(s: string) : string
+    {  
+        return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    };
 
     //==========================================================================
     function isFindAllFilesInRootDirectory() : boolean
@@ -49,44 +56,27 @@ namespace switcher {
     }
 
     //==========================================================================
-    function getFileExtension(fname: string) : string
-    {
-        const temp_a = (/[.]/.exec(fname));
-        if (temp_a) {
-            const temp_b = (/[^.]+$/.exec(fname));
-            return temp_b[0];
-        }
-        return undefined;
-    }
-
-    //==========================================================================
     function splitFilePath(fullpath: string) : SplitedPath
     {
-        let dpath = fullpath;
-        let fname = undefined;
-        let ename = undefined;
-        if (dpath) {
-            fname = dpath.replace(/^.*[\\\/]/, '');
-            if (fname) {
-                const index = dpath.lastIndexOf(fname);
-                dpath = dpath.substr(0, index - 1);
-
-                ename = getFileExtension(fname);
-                if (ename) {
-                    const index = fname.lastIndexOf(ename);
-                    fname = fname.substr(0, index - 1);
-                }
-            }
+        const dirname  = path.dirname(fullpath);
+        let   basename = path.basename(fullpath);
+        const suffix   = getSuffixByFileName(basename);
+        if (suffix != undefined) {
+            // remove suffix from basename
+            const re  = new RegExp("" + appendEspaceForRegex(suffix) + "$", "i");
+            basename = basename.replace(re, "");
         }
-        return new SplitedPath(dpath, fname, ename);
+        return new SplitedPath(dirname, basename, suffix);
     }
 
     //==========================================================================
-    function getExtensionIndex(ename: string) : number
+    function getSuffixIndex(filename: string) : number
     {
-        if (ename) {
-            for (let i in context.extensions) {
-                if (context.extensions[i] == ename) {
+        if (filename) {
+            for (let i in context.suffixes) {
+                const suffix = context.suffixes[i];
+                const re     = new RegExp("" + appendEspaceForRegex(suffix) + "$", "i");
+                if (filename.match(re)) {
                     return Number(i);
                 }
             }
@@ -95,23 +85,33 @@ namespace switcher {
     }
 
     //==========================================================================
-    function getExtensionName(ext_index: number) : string
+    function getSuffixByIndex(suffix_index: number) : string
     {
         let result = undefined;
-        if (ext_index >= 0 && ext_index < context.extensions.length) {
-            result = context.extensions[ext_index];
+        if (suffix_index >= 0 && suffix_index < context.suffixes.length) {
+            result = context.suffixes[suffix_index];
         }
         return result;
     }
 
     //==========================================================================
-    function getNextExtensionIndex(ext_index: number) : number
-    { 
-        let next_ext_index = ext_index + 1;
-        if (next_ext_index >= context.extensions.length) {
-            next_ext_index = 0;
+    function getSuffixByFileName(filename: string) : string
+    {
+        const suffix_index = getSuffixIndex(filename);
+        if (suffix_index != undefined) {
+            return getSuffixByIndex(suffix_index);
         }
-        return next_ext_index;
+        return undefined;
+    }
+
+    //==========================================================================
+    function getNextSuffixIndex(suffix_index: number) : number
+    { 
+        let next_suffix_index = suffix_index + 1;
+        if (next_suffix_index >= context.suffixes.length) {
+            next_suffix_index = 0;
+        }
+        return next_suffix_index;
     }
 
     //==========================================================================
@@ -138,7 +138,7 @@ namespace switcher {
     }
 
     //==========================================================================
-    function findInRootDirectory(ext_index: number) : PromiseLike<any>
+    function findInRootDirectory(suffix_index: number) : PromiseLike<any>
     {
         if (!isFindAllFilesInRootDirectory()) {
             return alwaysReject();
@@ -146,9 +146,8 @@ namespace switcher {
 
         let target_fpath;
         target_fpath  = "**/";
-        target_fpath += context.splited_path.fname;
-        target_fpath += ".";
-        target_fpath += getExtensionName(ext_index);
+        target_fpath += context.splited_path.basename;
+        target_fpath += getSuffixByIndex(suffix_index);
         const promise = vscode.workspace.findFiles(target_fpath, "", kFindFilesLimitCount).then(
             files => {
                 if (files.length == 1) {
@@ -180,36 +179,35 @@ namespace switcher {
     };
 
     //==========================================================================
-    function findInSameDirectory(ext_index: number) : PromiseLike<any>
+    function findInSameDirectory(suffix_index: number) : PromiseLike<any>
     {
         let target_fpath;
-        target_fpath  = context.splited_path.dpath;
+        target_fpath  = context.splited_path.dirname;
         target_fpath += "/";
-        target_fpath += context.splited_path.fname;
-        target_fpath += ".";
-        target_fpath += getExtensionName(ext_index);
+        target_fpath += context.splited_path.basename;
+        target_fpath += getSuffixByIndex(suffix_index);
         const promise = openTextDocument(target_fpath).then(
             document => {
                 return Promise.resolve(document);
             },
             reason =>  {
-                return findInRootDirectory(ext_index);
+                return findInRootDirectory(suffix_index);
             }
         );
         return promise;
     };
 
     //==========================================================================
-    function selectDocument(ext_index: number) : PromiseLike<any>
+    function selectDocument(suffix_index: number) : PromiseLike<any>
     {
-        return findInSameDirectory(ext_index).then(
+        return findInSameDirectory(suffix_index).then(
             document => {
                 return Promise.resolve(document);
             },
             reason => {
-                const next_ext_index = getNextExtensionIndex(ext_index);
-                if (next_ext_index != context.first_ext_index) {
-                    return selectDocument(next_ext_index);
+                const next_suffix_index = getNextSuffixIndex(suffix_index);
+                if (next_suffix_index != context.first_index) {
+                    return selectDocument(next_suffix_index);
                 } else {
                     return Promise.reject(undefined);
                 }
@@ -233,18 +231,18 @@ namespace switcher {
         context.splited_path = splitFilePath(
             // convert back-slash to slash
             active_document.fileName.replace(/\\/g, "/")
-        ); 
+        );
 
         // Get the extension index of the active document
-        context.first_ext_index = getExtensionIndex(context.splited_path.ename);
-        if (context.first_ext_index == undefined) {
+        context.first_index = getSuffixIndex(context.splited_path.suffix);
+        if (context.first_index == undefined) {
             console.log("Switcher: unknown extension");
             return;
         }
 
         // ドキュメントの選別を開始
-        const next_ext_index = getNextExtensionIndex(context.first_ext_index);
-        selectDocument(next_ext_index).then(
+        const next_suffix_index = getNextSuffixIndex(context.first_index);
+        selectDocument(next_suffix_index).then(
             document => {
                 console.log("Switcher: " + document.fileName);
                 vscode.window.showTextDocument(document);

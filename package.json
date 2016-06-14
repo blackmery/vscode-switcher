@@ -18,16 +18,20 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.switcher.run"
+        "onCommand:extension.switcher.doSwitch",
+        "onCommand:extension.switcher.doSwitchInWorkspaceRoot"
     ],
     "main": "./out/src/extension",
     "contributes": {
         "commands": [{
-            "command": "extension.switcher.run",
-            "title": "Switcher: Switch to Different File Extension"
+            "command": "extension.switcher.doSwitch",
+            "title": "Switcher: Default"
+        },{
+            "command": "extension.switcher.doSwitchInWorkspaceRoot",
+            "title": "Switcher: In the Workspace Root"
         }],
         "keybindings": [{
-            "command": "extension.switcher.run",
+            "command": "extension.switcher.doSwitch",
             "key": "alt+o",
             "mac": "alt+o"
         }],
@@ -35,10 +39,10 @@
             "type": "object",
             "title": "Switcher configuration",
             "properties": {
-                "switcher.findAllFilesInRootDirectory": {
+                "switcher.findAllFilesInWorkspaceRoot": {
                     "type": "boolean",
                     "default": false,
-                    "description": "Swicher: findAllFilesInRootDirectory"
+                    "description": "Swicher: findAllFilesInWorkspaceRoot"
                 },
                 "switcher.findSuffixOrder": {
                     "type": "array",

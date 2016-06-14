@@ -21,11 +21,13 @@ namespace switcher {
 
     //==========================================================================
     class Context {
+        entry_point  : any;
         splited_path : SplitedPath;
         first_index  : number;
         suffixes     : string [];
 
         constructor() {
+            this.entry_point  = undefined;
             this.splited_path = new SplitedPath();
             this.first_index  = undefined;
             this.suffixes     = [];
@@ -46,10 +48,14 @@ namespace switcher {
     };
 
     //==========================================================================
-    function isFindAllFilesInRootDirectory() : boolean
+    function isFindAllFilesInWorkspaceRoot() : boolean
     {
+        if (context.entry_point == doSwitchInWorkspaceRoot) {
+            return true;
+        }
+
         const configuration = vscode.workspace.getConfiguration();
-        if (configuration.get("switcher.findAllFilesInRootDirectory") == false) {
+        if (configuration.get("switcher.findAllFilesInWorkspaceRoot") == false) {
             return false;
         }
         return true;
@@ -138,9 +144,9 @@ namespace switcher {
     }
 
     //==========================================================================
-    function findInRootDirectory(suffix_index: number) : PromiseLike<any>
+    function findInWorkspaceRoot(suffix_index: number) : PromiseLike<any>
     {
-        if (!isFindAllFilesInRootDirectory()) {
+        if (!isFindAllFilesInWorkspaceRoot()) {
             return alwaysReject();
         }
 
@@ -191,7 +197,7 @@ namespace switcher {
                 return Promise.resolve(document);
             },
             reason =>  {
-                return findInRootDirectory(suffix_index);
+                return findInWorkspaceRoot(suffix_index);
             }
         );
         return promise;
@@ -216,8 +222,12 @@ namespace switcher {
     };
 
     //==========================================================================
-    export function run()
+    export function doSwitch()
     {
+        if (context.entry_point == undefined) {
+            context.entry_point = doSwitch;
+        }
+
         // Get the current active document
         let active_document: vscode.TextDocument = undefined;
         if (vscode.window.activeTextEditor) {
@@ -253,13 +263,30 @@ namespace switcher {
         );
     }
 
+    export function doSwitchInWorkspaceRoot()
+    {
+        context.entry_point = doSwitchInWorkspaceRoot;
+        doSwitch();
+    }
+
 } // namespace switcher.
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext)
 {
-    let disposable = vscode.commands.registerCommand('extension.switcher.run', switcher.run);
+    let disposable;
+
+    disposable = vscode.commands.registerCommand(
+        'extension.switcher.doSwitch',
+        switcher.doSwitch
+    );
+    context.subscriptions.push(disposable);
+
+    disposable = vscode.commands.registerCommand(
+        'extension.switcher.doSwitchInWorkspaceRoot',
+        switcher.doSwitchInWorkspaceRoot
+    );
     context.subscriptions.push(disposable);
 }
 

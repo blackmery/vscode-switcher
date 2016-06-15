@@ -239,11 +239,10 @@ namespace switcher {
     };
 
     //==========================================================================
-    export function doSwitch()
+    function run(entry_point: any)
     {
-        if (context.entry_point == undefined) {
-            context.entry_point = doSwitch;
-        }
+        // Save an entry point
+        context.entry_point = entry_point;
 
         // Get the current active document
         let active_document: vscode.TextDocument = undefined;
@@ -280,10 +279,15 @@ namespace switcher {
         );
     }
 
+    //==========================================================================
+    export function doSwitch()
+    {
+        run(doSwitch);
+    }
+
     export function doSwitchInWorkspaceRoot()
     {
-        context.entry_point = doSwitchInWorkspaceRoot;
-        doSwitch();
+        run(doSwitchInWorkspaceRoot);
     }
 
 } // namespace switcher.

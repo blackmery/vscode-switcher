@@ -14,10 +14,10 @@ Press `F1` in VS Code, type `install` and then look for `Switcher`.
 
 ## Key bindings
 
-| Keys        | Commands                        |
-|-------------|---------------------------------|
-| Alt+O       | Switcher: Default               |
-| Alt+Shift+O | Switcher: In the Workspace Root |
+| Keys       | Commands                        |
+|------------|---------------------------------|
+| Alt+O      | Switcher: Default               |
+| Ctrl+Alt+O | Switcher: In the Workspace Root |
 
 #### Change the key bindings
 
@@ -26,8 +26,8 @@ Press `F1` in VS Code, type `Keyboard Shortcuts` and then edit a `keybindings.js
 ##### keybindings.json:
 
 ```
-{ "key": "alt+o",       "command": "extension.switcher.doSwitch" },
-{ "key": "alt+shift+o", "command": "extension.switcher.doSwitchInWorkspaceRoot" }
+{ "key": "alt+o",      "command": "extension.switcher.doSwitch" },
+{ "key": "ctrl+alt+o", "command": "extension.switcher.doSwitchInWorkspaceRoot" }
 ```
 
 ## Configurations

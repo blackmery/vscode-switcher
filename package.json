@@ -1,8 +1,8 @@
 {
     "name": "vscode-switcher",
     "displayName": "Switcher",
-    "description": "Switch to different file extension for vscode (e.g. foo.c -> bar.h)",
-    "version": "0.0.1",
+    "description": "An extension for Visual Studio Code that quickly open a file for another file extension.",
+    "version": "0.1.0",
     "publisher": "blackmery",
     "license": "MIT",
     "bugs": { "url": "https://github.com/blackmery/vscode-switcher/issues" },
@@ -34,6 +34,10 @@
             "command": "extension.switcher.doSwitch",
             "key": "alt+o",
             "mac": "alt+o"
+        },{
+            "command": "extension.switcher.doSwitchInWorkspaceRoot",
+            "key": "ctrl+alt+o",
+            "mac": "cmd+alt+o"
         }],
         "configuration": {
             "type": "object",
@@ -79,8 +83,5 @@
     "devDependencies": {
         "typescript": "^1.8.5",
         "vscode": "^0.11.0"
-    },
-    "dependencies": {
-        "path": "^0.12.7"   
     }
 }

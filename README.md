@@ -1,39 +1,81 @@
 # Switcher
 
-Switcher for Visual Studio Code.
+Switcher is an extension for the Visual Studio Code.  
+This extension provides the ability to switch to a file of a different file
+extension with the same file name.
 
-# Configures
+![List](images/vscode-switcher-feature.gif)
 
-setting.json ( `Ctrl+shift+P, >User Settings` )
+## Installation
+
+Press `F1` in VS Code, type `install` and then look for `Switcher`.
+
+![List](images/vscode-switcher-install.png)
+
+## Key bindings
+
+| Keys        | Commands                        |
+|-------------|---------------------------------|
+| Alt+O       | Switcher: Default               |
+| Alt+Shift+O | Switcher: In the Workspace Root |
+
+#### Change the key bindings
+
+Press `F1` in VS Code, type `Keyboard Shortcuts` and then edit a `keybindings.json`.
+
+##### keybindings.json:
+
 ```
-{
-    "switcher.findAllFilesInRootDirectory": false,
-    "switcher.findSuffixOrder": [
-        ".m",
-        ".mm",
-        ".cs",
-        ".cpp",
-        ".cxx",
-        ".c++",
-        ".cc",
-        ".c",
-        ".h",
-        ".hpp",
-        ".hxx",
-        ".inc",
-        ".inl",
-        "-inl.h",
-        "_inl.h",
-        ".js",
-        ".html",
-        ".css"
-    ]
-}
+{ "key": "alt+o",       "command": "extension.switcher.doSwitch" },
+{ "key": "alt+shift+o", "command": "extension.switcher.doSwitchInWorkspaceRoot" }
 ```
 
-keybindings.json ( `Ctrl+shift+P, >Keyboard Shortcuts` )
+## Configurations
+
+#### Add or change the search order of the file extension
+
+Add a suffix to search for the file name, and can also change the search order.   
+Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then
+edit a `settings.json`.
+
+##### setting.json:
+
 ```
-{
-    { "key": "alt+o", "command": "extension.switcher.run" }
-}
+"switcher.findSuffixOrder": [
+    ".m",
+    ".mm",
+    ".cs",
+    ".cpp",
+    ".cxx",
+    ".c++",
+    ".cc",
+    ".c",
+    ".h",
+    ".hpp",
+    ".hxx",
+    ".inc",
+    ".inl",
+    "-inl.h",
+    "_inl.h",
+    ".js",
+    ".html",
+    ".css"
+]
 ```
+ 
+#### Change the `Switcher: Default` of behavior
+
+You can the behavior of the `Switcher: Default`. The default of the config is
+`false`, but if you change the `true` will be the same behavior as the
+`Switcher: In the Workspace Root`.  
+Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then
+edit a `settings.json`.
+
+##### setting.json:
+
+```
+"switcher.findAllFilesInRootDirectory": false
+```
+
+## License
+[MIT](LICENSE)

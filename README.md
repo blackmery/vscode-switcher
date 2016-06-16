@@ -1,4 +1,5 @@
-# Switcher
+# Switcher for Visual Studio Code
+[![Version](http://vsmarketplacebadge.apphb.com/version/blackmery.vscode-switcher.svg)](https://marketplace.visualstudio.com/items?itemName=blackmery.vscode-switcher) [![Installs](http://vsmarketplacebadge.apphb.com/installs/blackmery.vscode-switcher.svg)](https://marketplace.visualstudio.com/items?itemName=blackmery.vscode-switcher) [![GitHub issues](https://img.shields.io/github/issues/blackmery/vscode-switcher.svg)](https://github.com/blackmery/vscode-switcher/issues) [![MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 Switcher is an extension for the Visual Studio Code.  
 This extension provides the ability to switch to a file of a different file extension with the same file name.
@@ -22,8 +23,6 @@ Press `F1` in VS Code, type `install` and then look for `Switcher`.
 
 Press `F1` in VS Code, type `Keyboard Shortcuts` and then edit a `keybindings.json`.
 
-##### keybindings.json:
-
 ```
 { "key": "alt+o",      "command": "extension.switcher.doSwitch" },
 { "key": "ctrl+alt+o", "command": "extension.switcher.doSwitchInWorkspaceRoot" }
@@ -35,8 +34,6 @@ Press `F1` in VS Code, type `Keyboard Shortcuts` and then edit a `keybindings.js
 
 Add a suffix to search for the file name, and can also change the search order.   
 Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then edit a `settings.json`.
-
-##### setting.json:
 
 ```
 "switcher.findSuffixOrder": [
@@ -66,10 +63,11 @@ Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then edi
 You can the behavior of the `Switcher: Default`. The default of the config is `false`, but if you change the `true` will be the same behavior as the `Switcher: In the Workspace Root`.  
 Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then edit a `settings.json`.
 
-##### setting.json:
-
 ```
 "switcher.findAllFilesInRootDirectory": false
 ```
-## License
-[MIT](LICENSE)
+
+## More information
+
+- [Switcher on the Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=blackmery.vscode-switcher)
+- [GitHub repository](https://github.com/blackmery/vscode-switcher)

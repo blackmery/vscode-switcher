@@ -1,8 +1,7 @@
 # Switcher
 
 Switcher is an extension for the Visual Studio Code.  
-This extension provides the ability to switch to a file of a different file
-extension with the same file name.
+This extension provides the ability to switch to a file of a different file extension with the same file name.
 
 ![List](images/vscode-switcher-feature.gif)
 
@@ -35,8 +34,7 @@ Press `F1` in VS Code, type `Keyboard Shortcuts` and then edit a `keybindings.js
 #### Add or change the search order of the file extension
 
 Add a suffix to search for the file name, and can also change the search order.   
-Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then
-edit a `settings.json`.
+Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then edit a `settings.json`.
 
 ##### setting.json:
 
@@ -65,17 +63,13 @@ edit a `settings.json`.
  
 #### Change the `Switcher: Default` of behavior
 
-You can the behavior of the `Switcher: Default`. The default of the config is
-`false`, but if you change the `true` will be the same behavior as the
-`Switcher: In the Workspace Root`.  
-Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then
-edit a `settings.json`.
+You can the behavior of the `Switcher: Default`. The default of the config is `false`, but if you change the `true` will be the same behavior as the `Switcher: In the Workspace Root`.  
+Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then edit a `settings.json`.
 
 ##### setting.json:
 
 ```
 "switcher.findAllFilesInRootDirectory": false
 ```
-
 ## License
 [MIT](LICENSE)

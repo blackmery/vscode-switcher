@@ -69,6 +69,11 @@ Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then edi
 
 ## Changes
 
+Version 0.1.1: June 16, 2016
+
+- Upload a icon of the Switcher.
+- Update a README.md.
+
 Version 0.1.0: June 15, 2016
 
 - First release.

@@ -2,7 +2,7 @@
     "name": "vscode-switcher",
     "displayName": "Switcher",
     "description": "An extension for Visual Studio Code that quickly open a file for another file extension.",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "icon": "images/vscode-switcher-icon.png",
     "publisher": "blackmery",
     "license": "MIT",

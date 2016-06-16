@@ -57,7 +57,7 @@ Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then edi
     ".css"
 ]
 ```
- 
+
 #### Change the `Switcher: Default` of behavior
 
 You can the behavior of the `Switcher: Default`. The default of the config is `false`, but if you change the `true` will be the same behavior as the `Switcher: In the Workspace Root`.  
@@ -66,6 +66,13 @@ Press `F1` in VS Code, type `User Settings` or `Workspace Settings` and then edi
 ```
 "switcher.findAllFilesInRootDirectory": false
 ```
+
+## Changes
+
+Version 0.1.0: June 15, 2016
+
+- First release.
+
 
 ## More information
 

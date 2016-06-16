@@ -4,11 +4,11 @@ import * as path from 'path';
 
 namespace switcher {
 
-    //! for scode.workspace.findFiles()
+    //! for vscode.workspace.findFiles()
     const kFindFilesLimitCount : number = 8;
 
     //==========================================================================
-    class SplitedPath {
+    class SplittedPath {
         dirname : string;
         basename: string;
         suffix  : string;
@@ -21,16 +21,16 @@ namespace switcher {
 
     //==========================================================================
     class Context {
-        entry_point  : any;
-        splited_path : SplitedPath;
-        first_index  : number;
-        suffixes     : string [];
+        entry_point   : any;
+        splitted_path : SplittedPath;
+        first_index   : number;
+        suffixes      : string [];
 
         constructor() {
-            this.entry_point  = undefined;
-            this.splited_path = new SplitedPath();
-            this.first_index  = undefined;
-            this.suffixes     = [];
+            this.entry_point   = undefined;
+            this.splitted_path = new SplittedPath();
+            this.first_index   = undefined;
+            this.suffixes      = [];
 
             const configuration = vscode.workspace.getConfiguration();
             const suffixes      = configuration.get("switcher.findSuffixOrder");
@@ -42,7 +42,7 @@ namespace switcher {
     let context = new Context();
 
     //==========================================================================
-    function appendEspaceForRegex(s: string) : string
+    function appendEscapeForRegex(s: string) : string
     {  
         return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     };
@@ -62,17 +62,17 @@ namespace switcher {
     }
 
     //==========================================================================
-    function splitFilePath(fullpath: string) : SplitedPath
+    function splitFilePath(fullpath: string) : SplittedPath
     {
         const dirname  = path.dirname(fullpath);
         let   basename = path.basename(fullpath);
         const suffix   = getSuffixByFileName(basename);
         if (suffix != undefined) {
             // remove suffix from basename
-            const re  = new RegExp("" + appendEspaceForRegex(suffix) + "$", "i");
+            const re  = new RegExp("" + appendEscapeForRegex(suffix) + "$", "i");
             basename = basename.replace(re, "");
         }
-        return new SplitedPath(dirname, basename, suffix);
+        return new SplittedPath(dirname, basename, suffix);
     }
 
     //==========================================================================
@@ -81,7 +81,7 @@ namespace switcher {
         if (filename) {
             for (let i in context.suffixes) {
                 const suffix = context.suffixes[i];
-                const re     = new RegExp("" + appendEspaceForRegex(suffix) + "$", "i");
+                const re     = new RegExp("" + appendEscapeForRegex(suffix) + "$", "i");
                 if (filename.match(re)) {
                     return Number(i);
                 }
@@ -169,7 +169,7 @@ namespace switcher {
 
         let target_fpath;
         target_fpath  = "**/";
-        target_fpath += context.splited_path.basename;
+        target_fpath += context.splitted_path.basename;
         target_fpath += getSuffixByIndex(suffix_index);
         const promise = vscode.workspace.findFiles(target_fpath, "", kFindFilesLimitCount).then(
             files => {
@@ -205,9 +205,9 @@ namespace switcher {
     function findInSameDirectory(suffix_index: number) : PromiseLike<any>
     {
         let target_fpath;
-        target_fpath  = context.splited_path.dirname;
+        target_fpath  = context.splitted_path.dirname;
         target_fpath += "/";
-        target_fpath += context.splited_path.basename;
+        target_fpath += context.splitted_path.basename;
         target_fpath += getSuffixByIndex(suffix_index);
         const promise = openTextDocument(target_fpath).then(
             document => {
@@ -254,13 +254,13 @@ namespace switcher {
         }
 
         // Get the parts of directory path, filename and extension
-        context.splited_path = splitFilePath(
+        context.splitted_path = splitFilePath(
             // convert back-slash to slash
             active_document.fileName.replace(/\\/g, "/")
         );
 
         // Get the extension index of the active document
-        context.first_index = getSuffixIndex(context.splited_path.suffix);
+        context.first_index = getSuffixIndex(context.splitted_path.suffix);
         if (context.first_index == undefined) {
             console.log("Switcher: unknown extension");
             return;

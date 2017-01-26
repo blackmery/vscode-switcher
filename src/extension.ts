@@ -153,11 +153,11 @@ namespace switcher {
     //==========================================================================
     function alwaysReject() : PromiseLike<any>
     {
-        // TODO: Microsoft/vscode: vscode debugger stops on reject() #1746  
-        // return new Promise((resolve, reject) => {
-        //     return reject(undefined);
-        // });
-        return openTextDocument("");
+        // Microsoft/vscode: vscode debugger stops on reject() #1746
+        // return openTextDocument("");
+        return new Promise((resolve, reject) => {
+            return reject(undefined);
+        });
     }
 
     //==========================================================================
@@ -234,7 +234,7 @@ namespace switcher {
                 } else {
                     return Promise.reject(undefined);
                 }
-            } 
+            }
         )
     };
 

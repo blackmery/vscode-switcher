@@ -24,7 +24,7 @@ namespace switcher {
         entry_point   : any;
         splitted_path : SplittedPath;
         first_index   : number;
-        suffixes      : string [];
+        suffixes      : Array<string>;
 
         constructor() {
             this.entry_point   = undefined;
@@ -32,8 +32,8 @@ namespace switcher {
             this.first_index   = undefined;
             this.suffixes      = [];
 
-            const configuration = vscode.workspace.getConfiguration();
-            const suffixes      = configuration.get("switcher.findSuffixOrder");
+            const configuration        = vscode.workspace.getConfiguration();
+            const suffixes : string [] = configuration.get("switcher.findSuffixOrder");
             for (let i in suffixes) {
                 this.suffixes.push(suffixes[i]);
             }

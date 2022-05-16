@@ -3,7 +3,7 @@
         "module": "commonjs",
         "target": "es5",
         "outDir": "out",
-        "noLib": true,
+        "noLib": false,
         "sourceMap": true,
         "rootDir": "."
     },

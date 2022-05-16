@@ -79,13 +79,34 @@ namespace switcher {
     function getSuffixIndex(filename: string) : number
     {
         if (filename) {
+            interface MatchedInfo {
+                index: number;
+                suffix: string;
+            };
+            let matched_infos : Array<MatchedInfo> = [];
+
             for (let i in context.suffixes) {
                 const suffix = context.suffixes[i];
                 const re     = new RegExp("" + appendEscapeForRegex(suffix) + "$", "i");
                 if (filename.match(re)) {
-                    return Number(i);
+                    let info : MatchedInfo = {
+                        index: Number(i),
+                        suffix: suffix
+                    };
+                    matched_infos.push(info);
                 }
             }
+
+            if (!Array.isArray(matched_infos) || matched_infos.length == 0) {
+                return undefined;
+            }
+
+            let better_match = matched_infos.sort(
+                function(a, b) {
+                    return b.suffix.length - a.suffix.length;
+                }
+            )[0];
+            return better_match.index;
         }
         return undefined;
     }
